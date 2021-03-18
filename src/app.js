@@ -2,6 +2,9 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
+const cookieSesstion = require("cookie-session");
+
 const db = require("../models");
 const { routes } = require("./api");
 
@@ -21,8 +24,24 @@ app.use(
     credentials: true,
   })
 );
+
+const expiryDate = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+
+app.use(
+  cookieSesstion({
+    name: "session",
+    keys: ["key1", "key2"],
+    cookie: {
+      secure: true,
+      httpOnly: true,
+      expires: expiryDate,
+    },
+  })
+);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 

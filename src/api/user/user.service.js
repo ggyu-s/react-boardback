@@ -37,24 +37,32 @@ export default class UserService {
   async loginUser(loginInfo) {
     try {
       const { email, password } = loginInfo;
-      const { dataValues } = await User.findOne({
+      const user = await User.findOne({
         where: {
           email: email,
         },
-        attributes: ["id", "email"],
+        attributes: ["id", "email", "password", "nickname"],
       });
       if (!user) {
-        return new Error("No email");
+        throw new Error("No email");
       }
+      const { id, nickname } = user;
       const result = await bcrypt.compare(password, user.password);
+      console.log(result);
       if (!result) {
-        return new Error("No password");
+        throw new Error("No password");
       }
       const JM = new JMTManager();
-      const token = await JM.createSign({ ...dataValues }, "24h");
-      return { ...dataValues, token };
+      const token = await JM.createSign({ id, nickname }, "60s");
+      const reToken = await JM.createSign({ id, nickname }, "24h");
+      return { id, nickname, token, reToken };
     } catch (error) {
       throw error.message;
     }
+  }
+
+  async logOutUser() {
+    try {
+    } catch (error) {}
   }
 }

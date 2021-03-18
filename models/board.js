@@ -1,19 +1,23 @@
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define(
-    "User",
+  const Board = sequelize.define(
+    "Board",
     {
-      email: {
+      subject: {
         type: DataTypes.STRING(30),
         allowNull: true,
         unique: true,
       },
-      nickname: {
+      writer: {
         type: DataTypes.STRING(20),
         allowNull: true,
       },
-      password: {
-        type: DataTypes.STRING(100),
+      content: {
+        type: DataTypes.STRING(1000),
         allowNull: true,
+      },
+      count: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
       },
     },
     {
@@ -21,8 +25,8 @@ module.exports = (sequelize, DataTypes) => {
       collate: "utf8_general_ci",
     }
   );
-  User.associate = (db) => {
-    db.User.hasMany(db.Board, { targetKey: "id" });
+  Board.associate = (db) => {
+    db.Board.belongsTo(db.User, { sourceKey: "id" });
   };
-  return User;
+  return Board;
 };

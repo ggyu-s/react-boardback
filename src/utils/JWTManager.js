@@ -15,4 +15,17 @@ export default class Authenticator {
   async createSign(data, expiresIn) {
     return JWT.sign(data, jwtConfig.secret, { expiresIn });
   }
+
+  async verify(token) {
+    try {
+      const decoded = await JWT.verify(token, jwtConfig.secret);
+      if (decoded) return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  async decoded(token) {
+    return JWT.verify(token, jwtConfig.secret);
+  }
 }
