@@ -56,4 +56,77 @@ export default [
       }
     },
   },
+  {
+    path: "/board",
+    method: "delete",
+    middleware: [],
+    controller: async (req, res, next) => {
+      try {
+        const result = await BoardServiceInstance.deleteBoard(req.query);
+        if (!result) {
+          throw new Error();
+        }
+        return res.status(200).json({
+          status: 200,
+          message: "success",
+        });
+      } catch (error) {
+        return (
+          res.status(500),
+          json({
+            status: 500,
+            message: "failed",
+            data: error,
+          })
+        );
+      }
+    },
+  },
+  {
+    path: "/board/list",
+    method: "get",
+    middleware: [],
+    controller: async (req, res, next) => {
+      try {
+        const result = await BoardServiceInstance.getOneBoard(req.query);
+        if (!result) {
+          throw new Error();
+        }
+        return res.status(200).json({
+          status: 200,
+          message: "success",
+          data: result,
+        });
+      } catch (error) {
+        return res.status(500).json({
+          status: 500,
+          message: "failed",
+          data: error,
+        });
+      }
+    },
+  },
+  {
+    path: "/board/update",
+    method: "put",
+    middleware: [],
+    controller: async (req, res, next) => {
+      try {
+        const result = await BoardServiceInstance.updateBoard(req.body);
+        if (!result) {
+          throw new Error();
+        }
+        return res.status(200).json({
+          status: 200,
+          message: "success",
+        });
+      } catch (error) {
+        return res.status(500).json({
+          status: 500,
+          message: "failed",
+          data: error,
+        });
+      }
+    },
+  },
 ];

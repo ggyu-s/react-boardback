@@ -26,7 +26,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   Board.associate = (db) => {
-    db.Board.belongsTo(db.User, { sourceKey: "id" });
+    db.Board.belongsTo(db.User, {
+      foreignKey: "user",
+      targetKey: "id",
+    });
   };
   return Board;
 };

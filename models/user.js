@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   User.associate = (db) => {
-    db.User.hasMany(db.Board, { targetKey: "id" });
+    db.User.hasMany(db.Board, { foreignKey: "user", targetKey: "id" });
   };
   return User;
 };
